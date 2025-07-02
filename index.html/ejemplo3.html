@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo 3: Perfiles de Docentes - Diseño Verde con Modal</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        /* Nuevos colores: Paleta de Verdes y Neutros */
+        :root {
+            --green-primary: #28a745; /* Verde principal vibrante */
+            --green-secondary: #218838; /* Verde más oscuro para hover */
+            --green-light: #d4edda; /* Verde muy claro para fondos */
+            --text-dark-green: #155724; /* Verde oscuro para texto */
+            --text-light-green: #495057; /* Gris oscuro para texto secundario */
+            --bg-neutral: #f8f9fa; /* Fondo casi blanco */
+            --card-bg: #ffffff;
+            --shadow-subtle: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+
+            /* Colores para el modal */
+            --modal-bg: #f8f9fa;
+            --modal-border: #e0e0e0;
+            --modal-shadow: rgba(0, 0, 0, 0.25);
+        }
+
+        /* Animación de entrada general */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        body {
+            background-color: var(--green-light); /* Fondo verde claro */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-x: hidden; 
+        }
+        .container-wrapper {
+            background-color: var(--card-bg);
+            padding: 60px 40px;
+            border-radius: 20px; /* Bordes más redondeados */
+            box-shadow: 0 18px 50px var(--shadow-medium); /* Sombra más pronunciada */
+            margin: 50px auto;
+            max-width: 1200px; /* Ancho para 3 tarjetas */
+            text-align: center;
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
+        .section-title {
+            color: var(--green-primary);
+            font-size: 3.2em; /* Título un poco más grande */
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        .section-subtitle {
+            color: var(--text-light-green);
+            font-size: 1.4em; /* Subtítulo un poco más grande */
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Contenedor de las tarjetas de docentes con CSS Grid */
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 columnas flexibles */
+            gap: 40px; /* Espacio entre tarjetas */
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        /* Estilos para las tarjetas de perfil del docente */
+        .faculty-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-subtle);
+            padding: 35px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Empuja el botón hacia abajo */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--green-light); /* Borde suave inicial */
+        }
+        .faculty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px; /* Barra superior más prominente */
+            background-color: var(--green-primary); 
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease-out, background-color 0.3s ease;
+        }
+        .faculty-card:hover::before {
+            transform: scaleX(1);
+            background-color: var(--green-secondary); /* Verde más oscuro al hover */
+        }
+        .faculty-card:hover {
+            transform: translateY(-15px); /* Efecto de elevación más notorio */
+            box-shadow: 0 25px 60px var(--shadow-medium);
+            border-color: var(--green-primary); /* Borde se vuelve verde principal */
+        }
+
+        .faculty-avatar {
+            width: 130px; /* Avatar más grande */
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 30px auto;
+            border: 6px solid var(--green-primary); /* Borde de color principal */
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        .faculty-card:hover .faculty-avatar {
+            border-color: var(--green-secondary); /* Borde cambia a verde secundario en hover */
+            transform: scale(1.08); /* Ligero zoom en avatar */
+        }
+
+        .faculty-name {
+            font-size: 1.9em; /* Nombre un poco más grande */
+            font-weight: 700;
+            color: var(--text-dark-green);
+            margin-bottom: 12px;
+        }
+        .faculty-title-level {
+            font-size: 1.2em;
+            color: var(--text-dark-green);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .faculty-title-master {
+            font-size: 1.05em;
+            color: var(--text-light-green);
+            margin-bottom: 25px;
+            flex-grow: 1; /* Permite que el texto ocupe espacio y empuje el botón */
+        }
+        .faculty-details-btn {
+            background-color: var(--green-primary);
+            color: white;
+            padding: 12px 30px; /* Tamaño original del botón */
+            border-radius: 30px; /* Bordes más redondeados */
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 20px; 
+            letter-spacing: 0.5px; /* Espaciado entre letras */
+            font-size: 1em; /* Vuelve al tamaño de fuente normal */
+            line-height: 1.6; /* Vuelve al espaciado de línea normal */
+            cursor: pointer; /* Para indicar que es clickeable */
+        }
+        .faculty-details-btn:hover {
+            background-color: var(--green-secondary);
+            transform: translateY(-5px); /* Elevación más notoria */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Estilos específicos del Modal para los perfiles */
+        /* Eliminamos .modal-sm y lo hacemos personalizado */
+        .modal-container { 
+            max-width: 1000px; /* **Aumentamos el ancho máximo del modal** */
+            width: 90%; /* Asegura que el modal no sea demasiado grande en pantallas muy anchas */
+        }
+
+        .modal-body-content {
+            display: flex;
+            flex-wrap: wrap; /* Permite que las columnas se envuelvan en pantallas pequeñas */
+            justify-content: center;
+            gap: 30px; /* Espacio entre los perfiles dentro del modal */
+            padding: 20px;
+        }
+        .modal-profile-card {
+            background-color: var(--bg-neutral);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: calc(33.333% - 40px); /* 3 columnas dentro del modal */
+            /* IMPORTANTE: Quitamos max-width de aquí para que ocupe todo el ancho permitido por su padre */
+            box-sizing: border-box;
+        }
+        .modal-profile-card .faculty-avatar {
+            width: 100px; /* Avatar más pequeño en el modal */
+            height: 100px;
+            border-width: 4px; /* Borde más delgado */
+            margin-bottom: 15px;
+        }
+        .modal-profile-card .faculty-name {
+            font-size: 1.5em; /* Nombre más pequeño en el modal */
+            margin-bottom: 8px;
+        }
+        .modal-profile-card .faculty-title-level,
+        .modal-profile-card .faculty-title-master {
+            font-size: 0.95em; /* Texto más pequeño en el modal */
+            color: var(--text-light-green); /* Usamos el color de texto ligero de verde */
+            margin-bottom: 5px;
+        }
+        .modal-profile-card .modal-concept {
+            font-size: 0.95em; /* Ligeramente más grande para el concepto */
+            color: var(--text-dark-green);
+            margin-top: 15px;
+            font-style: italic;
+            line-height: 1.5; /* Mejor legibilidad */
+        }
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 992px) {
+            .faculty-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 columnas en tablets */
+                gap: 30px;
+            }
+            .container-wrapper {
+                padding: 50px 30px;
+            }
+            .section-title {
+                font-size: 2.5em;
+            }
+            .section-subtitle {
+                font-size: 1.2em;
+                margin-bottom: 50px;
+            }
+            .faculty-details-btn {
+                padding: 12px 25px; /* Ajuste para pantallas medianas */
+                font-size: 0.95em;
+            }
+            /* Modal en tablet */
+            .modal-container {
+                max-width: 760px; /* Ancho para 2 columnas en tablet */
+            }
+            .modal-profile-card {
+                width: calc(50% - 20px); /* 2 columnas en el modal para tablets */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .faculty-grid {
+                grid-template-columns: 1fr; /* 1 columna en móviles */
+                gap: 25px;
+            }
+            .container-wrapper {
+                padding: 30px 20px;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .section-subtitle {
+                font-size: 1em;
+                margin-bottom: 40px;
+            }
+            .faculty-avatar {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 20px;
+            }
+            .faculty-name {
+                font-size: 1.6em;
+            }
+            .faculty-title-level, .faculty-title-master {
+                font-size: 1em;
+            }
+            .faculty-details-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+            /* Modal en móvil */
+            .modal-container {
+                width: 95%; /* Modal más ancho en móviles */
+                max-width: 95%; /* Para asegurar que no haya un máximo muy alto */
+            }
+            .modal-profile-card {
+                width: 100%; /* 1 columna en el modal para móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-wrapper">
+        <h2 class="section-title">Nuestro Equipo de Liderazgo: ¡Conoce a los Profes de la UTM!</h2>
+        <p class="section-subtitle">
+            Ellos son la mente y el corazón de nuestra formación. Te presentamos a los ingenieros que te guiarán en tu camino.
+        </p>
+
+        <div class="faculty-grid">
+            <div class="faculty-card">
+                <img src="imp.jpg" alt="Foto de Oscar López Gorozabel" class="faculty-avatar">
+                <h5 class="faculty-name">Ing. Oscar Alexander López Gorozabel</h5>
+                <p class="faculty-title-level">Ingeniero de Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Ingeniería de Software y Sistemas Informáticos</p>
+                <a href="#modal-professors" class="faculty-details-btn">Ver su Perfil Completo</a>
+            </div>
+
+            <div class="faculty-card">
+                <img src="impp.jpg" alt="Foto de Enrique Macías Arias" class="faculty-avatar">
+                <h5 class="faculty-name">Ing. Enrique Macías Arias, Mg.</h5>
+                <p class="faculty-title-level">Ingeniero en Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Ingeniería de Software y Sistemas Informáticos</p>
+                <a href="#modal-professors" class="faculty-details-btn">Ver su Perfil Completo</a>
+            </div>
+
+            <div class="faculty-card">
+                <img src="impr.png" alt="Foto de Gema Isabel Medranda Cobeña" class="faculty-avatar">
+                <h5 class="faculty-name">Ing. Gema Isabel Medranda Cobeña</h5>
+                <p class="faculty-title-level">Ingeniera en Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Telecomunicaciones / Máster en Educación con mención en Informática y Tecnologías Educativas</p>
+                <a href="#modal-professors" class="faculty-details-btn">Ver su Perfil Completo</a>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="modal" id="modal-professors"> <a href="#close" class="modal-overlay" aria-label="Cerrar"></a>
+      <div class="modal-container">
+        <div class="modal-header">
+          <a href="#close" class="btn btn-clear float-right" aria-label="Cerrar"></a>
+          <div class="modal-title h5">Conoce a Nuestro Staff Docente</div>
+        </div>
+        <div class="modal-body">
+          <div class="content modal-body-content">
+            
+            <div class="modal-profile-card">
+                <img src="imp.jpg" alt="Foto de Oscar López Gorozabel" class="faculty-avatar">
+                <h6 class="faculty-name">Ing. Oscar Alexander López Gorozabel</h6>
+                <p class="faculty-title-level">Ingeniero de Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Ingeniería de Software y Sistemas Informáticos</p>
+                <p class="modal-concept">Con una trayectoria en desarrollo de software y liderazgo de proyectos, Oscar es clave en la creación de soluciones innovadoras que impulsan el avance tecnológico de nuestros estudiantes. Su experiencia asegura que nuestros futuros ingenieros aprendan las mejores prácticas de la industria.</p>
+            </div>
+
+            <div class="modal-profile-card">
+                <img src="impp.jpg" alt="Foto de Enrique Macías Arias" class="faculty-avatar">
+                <h6 class="faculty-name">Ing. Enrique Macías Arias, Mg.</h6>
+                <p class="faculty-title-level">Ingeniero en Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Ingeniería de Software y Sistemas Informáticos</p>
+                <p class="modal-concept">Experto en la arquitectura y diseño de sistemas complejos, el Ing.Enrique guía a los estudiantes en la construcción de bases sólidas para cualquier aplicación. Su visión estratégica es fundamental para desarrollar proyectos robustos y escalables.</p>
+            </div>
+
+            <div class="modal-profile-card">
+                <img src="impr.png" alt="Foto de Gema Isabel Medranda Cobeña" class="faculty-avatar">
+                <h6 class="faculty-name">Ing. Gema Isabel Medranda Cobeña</h6>
+                <p class="faculty-title-level">Ingeniera en Sistemas Informáticos</p>
+                <p class="faculty-title-master">Máster en Telecomunicaciones / Máster en Educación con mención en Informática y Tecnologías Educativas</p>
+                <p class="modal-concept">Es una fuerza en la integración de tecnología en la educación, haciendo que el aprendizaje sea más interactivo y accesible. Su doble maestría le permite innovar en la pedagogía digital, preparando a los estudiantes para los desafíos del futuro.</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#close" class="btn btn-primary">Cerrar</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Ejemplos con Spectre.css</title> <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; /* Centra todo el texto */
+            padding: 50px; 
+            background-color: #f8f9fa; /* Un color de fondo suave */
+        }
+        .container { 
+            max-width: 800px; /* Ancho máximo para que no se estire demasiado */
+            margin: 0 auto; /* Centra el contenedor en la página */
+            background-color: white; 
+            padding: 40px; 
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra suave */
+        }
+        h1 { 
+            color: #28a745; /* Color verde de tu paleta */
+            margin-bottom: 30px; 
+        }
+        ul { 
+            list-style: none; /* Quitamos los puntos de la lista */
+            padding: 0; 
+        }
+        li { 
+            margin-bottom: 20px; /* Espacio entre cada botón */
+        }
+        a.btn { /* Esto es para estilizar los enlaces como botones usando Spectre.css y un poco más */
+            background-color: #28a745; /* Color de fondo del botón */
+            color: white; /* Color del texto del botón */
+            padding: 15px 30px; /* Relleno del botón */
+            border-radius: 30px; /* Botones redondeados */
+            text-decoration: none; /* Quitamos el subrayado */
+            font-weight: bold; 
+            transition: all 0.3s ease; /* Transición suave al pasar el mouse */
+            display: inline-block; /* Para que los botones se puedan dar estilos como bloques */
+            min-width: 250px; /* Ancho mínimo para los botones */
+        }
+        a.btn:hover { /* Estilo al pasar el mouse por encima del botón */
+            background-color: #218838; /* Verde más oscuro */
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* Sombra al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mis Proyectos con Spectre.css</h1> <p>Explora los diferentes ejemplos que hemos creado utilizando el framework Spectre.css:</p>
+        <ul> <li><a href="ejemplo1.html" class="btn">Ver Ejemplo 1: Nuestro Equipo de Contacto</a></li> <li><a href="ejemplo2.html" class="btn">Ver Ejemplo 2: Pilares de Innovación UTM</a></li> <li><a href="ejemplo3.html" class="btn">Ver Ejemplo 3: Perfiles de Docentes Destacados</a></li> </ul>
+    </div>
+</body>
+</html>

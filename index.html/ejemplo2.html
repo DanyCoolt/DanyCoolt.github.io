@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo 2: Nuestras Habilidades en la UTM</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        /* Definición de colores personalizados */
+        :root {
+            --primary-color: #6a11cb; /* Morado vibrante */
+            --secondary-color: #2575fc; /* Azul eléctrico */
+            --accent-color-1: #ff6e7f; /* Rosa coral */
+            --accent-color-2: #feb47b; /* Naranja suave */
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f0f2f5;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animación de entrada para los elementos */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        body {
+            background-image: linear-gradient(to right top, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1); /* Fondo degradado animado */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container-wrapper {
+            background-color: var(--card-bg);
+            padding: 60px 40px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            margin: 50px auto;
+            max-width: 1400px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            animation: fadeInScale 0.8s ease-out forwards;
+        }
+        .section-title {
+            color: var(--primary-color);
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+        }
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.3em;
+            margin-bottom: 70px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Estilos para la tarjeta de característica (el pilar principal) */
+        .feature-card {
+            padding: 35px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px var(--shadow-light);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer; /* Indica que es clickeable */
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-image: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease-out;
+        }
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 18px 45px var(--shadow-medium);
+            background-color: #f8f8ff;
+        }
+        .feature-icon {
+            font-size: 4em; /* Íconos grandes */
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            transition: color 0.3s ease, transform 0.3s ease; /* Transición para color y tamaño */
+        }
+        .feature-card:hover .feature-icon {
+            color: var(--secondary-color);
+            transform: scale(1.1); /* Efecto de zoom en el ícono */
+        }
+        .feature-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 18px;
+        }
+        .feature-description {
+            font-size: 1.1em;
+            color: var(--text-light);
+            flex-grow: 1;
+            line-height: 1.7;
+        }
+
+        /* Estilos para el contenido dinámico (detalles ocultos) */
+        .feature-details {
+            background-color: #e6f0ff; /* Fondo claro para el detalle */
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 0 20px; /* Padding vertical 0 para que la transición de altura funcione */
+            margin-top: 15px; /* Espacio entre la tarjeta y los detalles */
+            margin-bottom: 25px; /* Espacio entre los detalles y el siguiente elemento */
+            text-align: left;
+            overflow: hidden;
+            max-height: 0; /* Inicialmente oculto */
+            opacity: 0; /* Inicialmente transparente */
+            transition: max-height 0.7s ease-out, opacity 0.7s ease-out, padding 0.7s ease-out; /* Transición para mostrar/ocultar */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transform: translateY(-10px); /* Ligeramente hacia arriba al ocultarse */
+        }
+        .feature-details.show {
+            max-height: 500px; /* Aumentado para asegurar que el contenido largo quepa. Ajusta si es necesario */
+            opacity: 1;
+            padding: 20px; /* Volver al padding normal */
+            transform: translateY(0); /* Volver a la posición normal */
+        }
+        .feature-details h6 {
+            color: var(--primary-color);
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .feature-details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .feature-details ul li {
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .feature-details ul li::before {
+            content: "•"; /* Bullet point personalizado */
+            color: var(--secondary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        .feature-details a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .feature-details a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilos para el sistema de columnas de Spectre.css */
+        .columns {
+            margin-left: -25px;
+            margin-right: -25px;
+            align-items: flex-start; 
+        }
+        .column {
+            padding: 25px;
+            flex: 0 0 calc(33.333% - 50px);
+            max-width: calc(33.333% - 50px);
+            display: flex;
+            flex-direction: column; 
+        }
+        @media (max-width: 960px) {
+            .column { 
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            .container-wrapper {
+                padding: 30px 20px;
+            }
+            .section-title {
+                font-size: 2.2em;
+            }
+            .section-subtitle {
+                font-size: 1em;
+                margin-bottom: 40px;
+            }
+            .feature-icon {
+                font-size: 3.5em;
+            }
+            .feature-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-wrapper">
+        <h2 class="section-title">¡Somos UTM: Nuestras Habilidades Clave!</h2>
+        <p class="section-subtitle">
+            Aquí te mostramos en qué nos enfocamos , lo que nos hace especiales. ¡Dale clic a cada sección para enterarte de más!
+        </p>
+
+        <div class="columns">
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-investigacion">
+                    <i class="icon icon-edit feature-icon"></i> 
+                    <h5 class="feature-title">Siempre Investigando y Creando</h5>
+                    <p class="feature-description">Nos encanta buscar cosas nuevas y dar con soluciones geniales para los problemas de hoy, aprendiendo un montón en el camino.</p>
+                </div>
+                <div id="details-investigacion" class="feature-details">
+                    <h6>Temas que nos emocionan:</h6>
+                    <ul>
+                        <li>Inteligencia Artificial para la salud de nuestra gente</li>
+                        <li>Cómo usar energías limpias aquí en Manabí</li>
+                        <li>Descubriendo y cuidando la vida en nuestras costas</li>
+                        <li>Analizando datos para ayudar a la sociedad</li>
+                    </ul>
+                    <p>Mira los <a href="#" target="_blank">proyectos de investigación</a> que estamos haciendo. ¡Te van a sorprender!</p>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-impacto-social">
+                    <i class="icon icon-people feature-icon"></i> 
+                    <h5 class="feature-title">Ayudando a Nuestra Comunidad</h5>
+                    <p class="feature-description">Nos gusta poner en práctica lo que aprendemos en la U al servicio de la gente, creando proyectos que de verdad mejoren la vida de todos.</p>
+                </div>
+                <div id="details-impacto-social" class="feature-details">
+                    <h6>Así ayudamos:</h6>
+                    <ul>
+                        <li>Clases de compu para zonas donde no tienen mucho acceso</li>
+                        <li>Creando sistemas para que el agua llegue bien a todos</li>
+                        <li>Apoyando ideas de negocio locales para que crezcan</li>
+                        <li>Haciendo campañas para cuidar el ambiente y la salud</li>
+                    </ul>
+                    <p>¡Súmate a nuestras <a href="#" target="_blank">iniciativas de vinculación</a> y haz la diferencia!</p>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-innovacion-tec">
+                    <i class="icon icon-flash feature-icon"></i> 
+                    <h5 class="feature-title">Creando con Tecnología</h5>
+                    <p class="feature-description">Nos encanta inventar cosas nuevas con la tecnología, desde apps hasta sistemas que cambian cómo hacemos las cosas y abren un montón de puertas.</p>
+                </div>
+                <div id="details-innovacion-tec" class="feature-details">
+                    <h6>Las tecnologías que nos molan:</h6>
+                    <ul>
+                        <li>Desarrollo de apps y webs que te dejarán con la boca abierta</li>
+                        <li>Análisis de datos grandes y sistemas que "piensan"</li>
+                        <li>Robots y máquinas que hacen el trabajo por nosotros</li>
+                        <li>Usando Realidad Virtual para aprender de forma brutal</li>
+                    </ul>
+                    <p>Conoce nuestras <a href="#" target="_blank">líneas de desarrollo tecnológico</a>. ¡Estamos a la vanguardia!</p>
+                </div>
+            </div>
+            
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-colaboracion">
+                    <i class="icon icon-share feature-icon"></i> 
+                    <h5 class="feature-title">Trabajando Juntos es Mejor</h5>
+                    <p class="feature-description">Creemos que las mejores ideas nacen cuando gente de diferentes carreras se une. Así, cada proyecto es mucho más completo e interesante.</p>
+                </div>
+                <div id="details-colaboracion" class="feature-details">
+                    <h6>Así colaboramos:</h6>
+                    <ul>
+                        <li>Equipos de locos para hackatones y desafíos</li>
+                        <li>Proyectos de tesis en equipo con profes de otras facultades</li>
+                        <li>Compartiendo lo que sabemos entre diferentes áreas</li>
+                        <li>Eventos y charlas donde aprendemos de todos</li>
+                    </ul>
+                    <p>¡No te quedes fuera! Descubre cómo <a href="#" target="_blank">colaborar en la UTM</a> y haz nuevos amigos.</p>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-practica">
+                    <i class="icon icon-tag feature-icon"></i> 
+                    <h5 class="feature-title">Manos a la Obra: Aprender Haciendo</h5>
+                    <p class="feature-description">Para nosotros, lo importante es que puedas usar lo que aprendes en la vida real. Así, saldrás listo para cualquier cosa.</p>
+                </div>
+                <div id="details-practica" class="feature-details">
+                    <h6>Cómo aprendemos en acción:</h6>
+                    <ul>
+                        <li>Prácticas obligatorias para vivir el mundo laboral</li>
+                        <li>Simulaciones y casos reales en nuestros laboratorios</li>
+                        <li>Proyectos de clase que resuelven problemas de verdad</li>
+                        <li>Visitas a empresas para ver cómo funciona todo</li>
+                    </ul>
+                    <p>Conoce más sobre cómo te preparamos para el futuro con la <a href="#" target="_blank">educación práctica de la UTM</a>.</p>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-12">
+                <div class="feature-card" data-target="details-emprendimiento">
+                    <i class="icon icon-link feature-icon"></i> 
+                    <h5 class="feature-title">¡Crea tu Propia Historia! (Emprendimiento)</h5>
+                    <p class="feature-description">Si tienes una idea de negocio, aquí te damos una mano para que la hagas realidad. Queremos que seas tu propio jefe.</p>
+                </div>
+                <div id="details-emprendimiento" class="feature-details">
+                    <h6>Te apoyamos con:</h6>
+                    <ul>
+                        <li>Espacios para pulir tu idea (incubadora de negocios)</li>
+                        <li>Charlas y consejos de gente que ya lo logró</li>
+                        <li>Talleres para que sepas de finanzas y cómo vender</li>
+                        <li>Conectándote con quienes invierten en nuevas ideas</li>
+                    </ul>
+                    <p>Haz que tu idea despegue con la ayuda de nuestro <a href="#" target="_blank">Centro de Emprendimiento</a>. ¡No hay límites!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const targetId = this.dataset.target; 
+                    const targetDetails = document.getElementById(targetId);
+
+                    document.querySelectorAll('.feature-details.show').forEach(openDetails => {
+                        if (openDetails.id !== targetId) {
+                            openDetails.classList.remove('show');
+                        }
+                    });
+
+                    targetDetails.classList.toggle('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

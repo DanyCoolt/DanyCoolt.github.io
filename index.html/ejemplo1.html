@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectre.css - Tarjetas de Perfil de Equipo Elegantes</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <style>
+        /* Estilos personalizados para este ejemplo */
+        body {
+            background-color: #f0f2f5; /* Fondo más suave */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más moderna */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container-wrapper {
+            background-color: #ffffff;
+            padding: 50px; /* Más padding */
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            max-width: 1200px; /* Ajuste el ancho máximo para tres columnas */
+            width: 100%;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .profile-description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1em;
+            max-width: 900px; /* Ajuste el ancho para la descripción */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .columns {
+            margin-left: -15px;
+            margin-right: -15px;
+            justify-content: center;
+        }
+        .column {
+            padding: 15px; /* Espacio entre las tarjetas de perfil */
+            /* === A J U S T E === */
+            /* Para 3 columnas, cada una tomará 4/12 de ancho en escritorio, y se adaptarán en tablet/móvil */
+            flex: 0 0 33.3333%; /* Asegura que se distribuyan equitativamente */
+            max-width: 33.3333%;
+        }
+        /* Media Queries para responsividad, crucial para 3 columnas */
+        @media (max-width: 960px) { /* Para tabletas, 2 columnas */
+            .column.col-md-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 600px) { /* Para móviles, 1 columna */
+            .column.col-sm-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        .profile-card {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            background-color: #ffffff;
+            height: 100%; /* Asegura que todas las tarjetas tengan la misma altura */
+        }
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .profile-card .card-image {
+            width: 100%;
+            height: 200px; /* Ligeramente más bajas para 3 columnas, si es necesario, ajusta */
+            object-fit: cover;
+            filter: brightness(0.75);
+            transition: filter 0.3s ease-in-out;
+        }
+        .profile-card:hover .card-image {
+            filter: brightness(0.9);
+        }
+        .profile-card .card-header {
+            position: relative;
+            width: 100%;
+            padding-bottom: 90px; /* Espacio para el avatar que sobresale */
+            background-color: #f0f2f5;
+        }
+        .profile-avatar {
+            width: 140px; /* Tamaño del avatar ajustado para 3 columnas */
+            height: 140px;
+            border-radius: 50%;
+            border: 6px solid #ffffff;
+            position: absolute;
+            bottom: -70px; /* La mitad de su nueva altura */
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+            background-color: #fff;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+        .profile-card:hover .profile-avatar {
+            transform: translateX(-50%) scale(1.05);
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .profile-card .card-body {
+            padding-top: 100px; /* Espacio para el avatar */
+            padding-bottom: 25px;
+            color: #444;
+            font-size: 1em; /* Ajustado para mejor lectura en 3 columnas */
+            line-height: 1.6;
+            flex-grow: 1; /* Permite que el cuerpo de la tarjeta ocupe el espacio restante */
+        }
+        .profile-card .card-title {
+            font-size: 1.8em; /* Título de perfil ligeramente más pequeño para 3 columnas */
+            color: #007bff;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .profile-card .card-subtitle {
+            font-size: 1.1em; /* Subtítulo ajustado */
+            color: #777;
+            margin-bottom: 20px;
+        }
+        .profile-card .card-footer {
+            border-top: 1px solid #eee;
+            padding: 20px;
+            background-color: #f9f9f9;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .social-icons .btn {
+            margin: 0 8px; /* Más espacio entre los iconos sociales */
+            font-size: 1.2em; /* Iconos ligeramente más pequeños para 3 columnas */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .social-icons .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* Color para el botón de WhatsApp */
+        .social-icons .btn-whatsapp { 
+            background-color: #25D366; /* Verde de WhatsApp */
+            color: white; 
+        }
+        .social-icons .btn-whatsapp:hover {
+            background-color: #1DA851; /* Un poco más oscuro al pasar el mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-wrapper">
+        <h3 class="section-title">Conoce a Nuestro Talentoso Equipo</h3>
+        <p class="profile-description">
+            Estamos orgullosos de presentarte a los pilares de nuestro equipo. Cada miembro aporta experiencia y pasión, reflejando el compromiso que tenemos con la excelencia.
+        </p>
+
+        <div class="columns">
+            <div class="column col-4 col-md-6 col-sm-12">
+                <div class="profile-card">
+                    <div class="card-header">
+                        <img src="im4.jpg" alt="Fondo de Perfil" class="card-image img-responsive">
+                        <figure class="avatar avatar-xxl profile-avatar">
+                            <img src="im2.jpg" alt="Avatar de Daniela Coolt">
+                        </figure>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title h5">Daniela Coolt</div>
+                        <div class="card-subtitle text-gray">Directora de Proyectos</div>
+                        <p>Lidera equipos con visión estratégica, asegurando la entrega exitosa de cada iniciativa, desde la concepción hasta el lanzamiento.</p>
+                    </div>
+                    <div class="card-footer social-icons">
+                        <a href="https://wa.me/593996918394" 
+                           class="btn btn-whatsapp s-circle tooltip" data-tooltip="Contactar por WhatsApp" aria-label="WhatsApp" target="_blank">
+                           <i class="icon icon-message"></i> </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-6 col-sm-12">
+                 <div class="profile-card">
+                    <div class="card-header">
+                        <img src="im5.png" alt="Fondo de Perfil" class="card-image img-responsive">
+                        <figure class="avatar avatar-xxl profile-avatar">
+                            <img src="im3.jpg" alt="Avatar de Ronald Valencia">
+                        </figure>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title h5">Ronald Valencia</div>
+                        <div class="card-subtitle text-gray">Desarrollador Principal</div>
+                        <p>Experto en la construcción de soluciones robustas y escalables, utilizando las últimas tecnologías para transformar ideas en realidad funcional.</p>
+                    </div>
+                    <div class="card-footer social-icons">
+                        <a href="https://wa.me/593958848840" 
+                           class="btn btn-whatsapp s-circle tooltip" data-tooltip="Contactar por WhatsApp" aria-label="WhatsApp" target="_blank">
+                           <i class="icon icon-message"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column col-4 col-md-6 col-sm-12">
+                 <div class="profile-card">
+                    <div class="card-header">
+                        <img src="im6.png" alt="Fondo de Perfil" class="card-image img-responsive">
+                        <figure class="avatar avatar-xxl profile-avatar">
+                            <img src="im1.jpg" alt="Avatar de Katherine Saraguro">
+                        </figure>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title h5">Katherine Saraguro</div>
+                        <div class="card-subtitle text-gray">Diseñadora UX/UI</div>
+                        <p>Crea interfaces de usuario intuitivas y visualmente atractivas, centradas en la experiencia del usuario y la innovación en el diseño.</p>
+                    </div>
+                    <div class="card-footer social-icons">
+                        <a href="https://wa.me/593969087064" 
+                           class="btn btn-whatsapp s-circle tooltip" data-tooltip="Contactar por WhatsApp" aria-label="WhatsApp" target="_blank">
+                           <i class="icon icon-message"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
