@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo UI – Componentes Completos</title>
+
+  <!-- Tu núcleo y la colección de componentes -->
+  <link rel="stylesheet" href="../styles/core.css" />
+  <link rel="stylesheet" href="../components/_index.css" />
+
+  <!-- Estilos rápidos solo para badge -->
+  <style>
+    .badge {
+      display:inline-block;
+      padding:0.15rem 0.45rem;
+      font-size:0.75rem;
+      font-weight:600;
+      color:#fff;
+      background:var(--color-primary-dark);
+      border-radius:9999px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Navbar responsivo con logo ===== -->
+  <header class="navbar">
+
+    <!-- Marca + logo (puedes cambiar la imagen) -->
+    <a href="#" class="navbar__brand" style="display:flex;align-items:center;gap:0.5rem;">
+      <img src="im3.png"
+           alt="Logo" style="height:32px;width:32px" />
+      Mi&nbsp;biblioteca
+    </a>
+
+    <!-- Menú hamburguesa (CSS‑solo con <details>) -->
+    <details>
+      <summary class="navbar__toggle" aria-label="Abrir menú">&#9776;</summary>
+      <nav class="navbar__links">
+        <a class="navbar__link" href="#botones">Botones</a>
+        <a class="navbar__link" href="#tarjetas">Tarjetas</a>
+        <a class="navbar__link" href="#formulario">Formulario</a>
+        <a class="navbar__link" href="#otros">Más</a>
+      </nav>
+    </details>
+
+  </header>
+
+  <!-- ===== Contenido principal ===== -->
+  <main style="padding:2rem;max-width:960px;margin-inline:auto;display:flex;flex-direction:column;gap:3rem;">
+
+    <!-- BOTONES -->
+    <section id="botones">
+      <h2>Botones <span class="badge"></span></h2>
+      <button class="btn btn--primary" data-tooltip="Acción principal">Primario</button>
+      <button class="btn btn--secondary">Secundario</button>
+      <button class="btn btn--ghost">Fantasma</button>
+      <button class="btn" disabled>Deshabilitado</button>
+    </section>
+
+    <!-- TARJETAS -->
+    <section id="tarjetas">
+      <h2>Tarjetas</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;">
+        <!-- Tarjeta 1 -->
+        <article class="card">
+          <div class="card__media">
+            <img src="im1.png" alt="Foto 1" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Componentes de la interfaz de usuario</h3>
+            <p>Las aplicaciones Ionic se componen de componentes básicos de alto nivel, que permiten crear rápidamente la interfaz de usuario (UI) de la aplicación. Ionic viene de fábrica con varios componentes, como tarjetas, listas y pestañas.</p>
+            <div class="card__actions">
+              <button class="btn btn--primary">Inscribirme</button>
+              <button class="btn btn--ghost">Detalles</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2 -->
+        <article class="card">
+          <div class="card__media">
+            <img src="im2.jpg" alt="Foto 2" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Aceternity</h3>
+            <p>Encuentra los mejores módulos npm para animación (de tendencia). Encuentra la mejor pila tecnológica de React UI, así como la biblioteca de componentes y estilos (de tendencia).</p>
+            <div class="card__actions">
+              <button class="btn btn--primary">Inscribirme</button>
+              <button class="btn btn--ghost">Detalles</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- FORMULARIO -->
+    <section id="formulario">
+      <h2>Formulario</h2>
+      <form style="display:grid;gap:1rem;max-width:400px;">
+        <div class="field">
+          <label class="field__label" for="nombre">Nombre</label>
+          <input class="input" id="nombre" type="text" placeholder="Tu nombre" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="correo">Correo electrónico</label>
+          <input class="input" id="correo" type="email" placeholder="tu@ejemplo.com" required />
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="plan">Plan</label>
+          <select class="input select" id="plan">
+            <option>Básico</option>
+            <option>Pro</option>
+            <option>Premium</option>
+          </select>
+        </div>
+
+        <label class="checkbox">
+          <input type="checkbox" class="checkbox__input" required />
+          <span class="checkbox__custom"></span>
+          Acepto términos y condiciones
+        </label>
+
+        <button type="submit" class="btn btn--primary">Enviar</button>
+      </form>
+    </section>
+
+    <!-- OTROS COMPONENTES (Modal, Tooltip extra, Accordion) -->
+    <section id="otros">
+      <h2>Otros componentes</h2>
+
+      <!-- Botón que abre modal -->
+      <button id="abrir-modal" class="btn btn--secondary" data-tooltip="Ventana emergente">Abrir modal</button>
+
+      <!-- Tooltip de muestra -->
+      <span style="margin-left:1rem;" data-tooltip="¡Hola!">Pasa el cursor aquí</span>
+
+      <!-- Acordeón -->
+      <h3 style="margin-top:2rem;">Preguntas frecuentes</h3>
+      <div class="accordion" style="max-width:600px;">
+        <details>
+          <summary>¿Cómo funciona el pedido?</summary>
+          <div class="accordion__content">
+            Eliges tu curso, presionas “inscribirme” y te respondemos al instante.
+          </div>
+        </details>
+        <details>
+          <summary>¿Hacen envíos de los formularios?</summary>
+          <div class="accordion__content">
+            Sí, enviamos a toda la ciudad en menos de 30&nbsp;minutos.
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Modal oculto (usa modal.css) ===== -->
+  <div id="demo-modal" class="modal" hidden>
+    <div class="modal__dialog">
+      <button class="modal__close btn--ghost" data-close-modal aria-label="Cerrar modal">×</button>
+      <h2 style="margin-bottom:1rem;">¡Oferta especial!</h2>
+      <p>Usa el código <strong>UI20</strong> y obtén 20 % de descuento en equipos tecnologicos.</p>
+      <button class="btn btn--primary" data-close-modal style="margin-top:1rem;">Entendido</button>
+    </div>
+  </div>
+
+  <!-- JS mínimo para abrir/cerrar modal (sin librerías) -->
+  <script>
+    const modal = document.getElementById('demo-modal');
+    document.getElementById('abrir-modal').addEventListener('click', () => modal.hidden = false);
+    document.querySelectorAll('[data-close-modal]').forEach(btn =>
+      btn.addEventListener('click', () => modal.hidden = true)
+    );
+    // Cerrar con Esc
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.hidden = true; });
+  </script>
+
+</body>
+</html>

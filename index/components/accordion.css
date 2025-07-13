@@ -1,0 +1,10 @@
+.accordion details summary {
+  cursor: pointer;
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-muted);
+}
+.accordion__content {
+  padding: var(--space-3);
+  background: white;
+}
